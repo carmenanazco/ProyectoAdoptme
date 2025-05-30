@@ -1,6 +1,5 @@
 import PetDTO from "../dto/Pet.dto.js";
-//import { PetsDao } from "../dao/petsMockDao.js"
-import { generaPets, generaUser } from "../mocks/petsMock.js";
+import { generaPets, generaUser } from "../mocks/mocks.js";
 import { petsService, usersService } from "../services/index.js";
 import { createHash } from "../utils/index.js";
 
@@ -92,14 +91,5 @@ export const mockData = async(req, res)=>{
         }catch (error) {
             return res.status(500).json({error:`error al grabar datos`})
         }
-        //res.send({status: 'success'})
     }
-            // users.forEach(async elem => {
-            //     const user = {
-            //         first_name:elem.first_name,
-            //         last_name: elem.last_name,
-            //         email: elem.email,
-            //         password: elem.password,
-            //         role: elem.role
-            //     }
-            // });
+    
