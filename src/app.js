@@ -8,6 +8,10 @@ import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
 import sessionsRouter from './routes/sessions.router.js';
 import mocksRouter from './routes/mocks.router.js'
+import { errorHandler } from './middleware/errorHandler.js';
+import { addLogger } from './utils/logger.js';
+process.loadEnvFile("./.env")
+
 
 const app = express();
 dotenv.config()
@@ -15,6 +19,7 @@ dotenv.config()
 const UriMongo = process.env.URIMONGO
 const PORT = process.env.PORT||8080;
 
+app.use(addLogger)
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -37,5 +42,6 @@ app.use('/api/adoptions',adoptionsRouter);
 app.use('/api/sessions',sessionsRouter);
 app.use('/api/mocks', mocksRouter);
 
+app.use(errorHandler)
 app.listen(PORT,()=>console.log(`Listening on ${PORT}`))
 

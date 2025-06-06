@@ -1,0 +1,8 @@
+
+{"fecha":"2025-06-05T21:54:43.787Z","error":"La cantidad no es valida","host":"Carmen","user":"Carmen A"}
+{"fecha":"2025-06-05T21:55:17.360Z","error":"La cantidad no es valida","host":"Carmen","user":"Carmen A"}
+{"fecha":"2025-06-05T22:10:56.976Z","error":"La cantidad no es valida","host":"Carmen","user":"Carmen A"}
+{"fecha":"2025-06-05T23:49:49.190Z","error":"La cantidad no es valida","host":"Carmen","user":"Carmen A"}
+{"fecha":"2025-06-05T23:59:16.354Z","error":"Cannot set headers after they are sent to the client","host":"Carmen","user":"Carmen A"}{"level":"warn","message":"Alerta","timestamp":"2025-06-06T02:37:48.626Z"}
+
+{"fecha":"2025-06-06T02:37:48.661Z","error":"Cannot set headers after they are sent to the client","host":"Carmen","user":"Carmen A"}

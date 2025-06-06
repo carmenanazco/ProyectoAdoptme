@@ -2,74 +2,80 @@ import PetDTO from "../dto/Pet.dto.js";
 import { generaPets, generaUser } from "../mocks/mocks.js";
 import { petsService, usersService } from "../services/index.js";
 import { createHash } from "../utils/index.js";
+import { addLogger } from "../utils/logger.js";
 
-export const mockPets= async(req, res)=>{
-    let { cantidad=1, db} = req.query
-    let pets = []
-    for(let i=0; i<cantidad; i++){
-        pets.push(generaPets())
-    }
+export const mockPets= async(req, res, next)=>{
+    try {
+        req.logger.warn('Alerta');
+        
+        res.send({message: "Prueba de logger"})
 
-    if(db){
-        try {
-            pets.forEach(async elem => {
-                const pet = PetDTO.getPetInputFrom({
-                    name: elem.name,
-                    specie: elem.specie,
-                    birthDate: elem.birthDate,
-                    image: elem.image
-
-                });
-                await petsService.create(pet);
-            });
-
-        } catch (error) {
-            return res.status(500).json({error:`error al grabar datos`})
+        let { cantidad=1 } = req.query
+        const nCantidad = Number(cantidad)
+        if (isNaN(nCantidad) || !Number.isInteger(nCantidad) || nCantidad<=0){
+            throw new Error("La cantidad no es valida")
         }
-    }
-    return res.status(200).json({pets})
-}
+        const pets = []
 
+        for(let i=0; i<cantidad; i++){
+            const newPet = generaPets()
+            const pet = PetDTO.getPetInputFrom({
+                name: newPet.name,
+                specie: newPet.specie,
+                birthDate: newPet.birthDate,
+                image: newPet.image
+                });
+            pets.push(pet)
+            console.log(pet);
+        }
+        return res.status(200).json(pets)
+
+    } catch (error) {
+        next(error)
+        //return res.status(500).json({error:`error al crear pets datos`})
+    }
+}
 
 export const mockUsers = async(req, res)=>{
-    let { cantidad =1, db} = req.query
-    let users = []
-    for(let i=0; i<cantidad; i++){
-        const newUser= generaUser()
-        newUser.password= await createHash(newUser.password);
-        await users.push(newUser)
-        //console.log(users);
-    }
-
-    if(db){
-        try {
-            users.forEach(async elem => {
-                const user = {
-                    first_name:elem.first_name,
-                    last_name: elem.last_name,
-                    email: elem.email,
-                    password: elem.password,
-                    role: elem.role
-                }
-                await usersService.create(user);
-            });
-
-        }catch (error) {
-            return res.status(500).json({error:`error al grabar datos`})
+    try {
+        let { cantidad=1 } = req.query
+        const nCantidad = Number(cantidad)
+       
+        if (isNaN(nCantidad) || !Number.isInteger(nCantidad) || nCantidad<=0){
+            throw new Error("La cantidad no es valida")
         }
-    return res.status(200).json({users})
+        const users =[]
+
+        for(let i=0; i<cantidad; i++){
+            const user= generaUser()
+            user.password= await createHash(user.password);
+            users.push(user)
+        }
+        return res.status(200).json(users)
+        }catch (error) { 
+            next(error)       
+            //return res.status(500).json({error:`error al grabar datos`})
+        }
     }
-}
+
 
 export const mockData = async(req, res)=>{
-    
-    const {cantUsers, cantPets}= req.params
-    try {
+    try {        
+        const {user, pet}= req.query
+        const cantidadUser = Number(user)
+        const cantidadPet = Number(pet)
+        
+        if (isNaN(cantidadUser) || isNaN(cantidadPet)|| !Number.isInteger(cantidadUser) || !Number.isInteger(cantidadPet) || cantidadPet<=0 || cantidadUser<=0){
+            throw new Error("La cantidad no es valida")
+        }
+
+        const users = []
+        const pets = []
         for(let i=0; i<cantUsers; i++){
             const newUser= generaUser()
             newUser.password= await createHash(newUser.password);
-            console.log(newUser);
-            await usersService.create(newUser);
+            let user = await usersService.create(newUser);
+            users.push(user)
         }
 
         for(let i=0; i<cantPets; i++){
@@ -81,15 +87,15 @@ export const mockData = async(req, res)=>{
                 image: newPet.image
             });
             console.log(pet);
-
-            await petsService.create(pet);
-
+            let petSave =await petsService.create(pet);
+            pets.push(petSave)
         }
-            return res.status(200).json({status: 'success'})
+        
+        return res.status(200).json({users, pets})
 
 
         }catch (error) {
-            return res.status(500).json({error:`error al grabar datos`})
+            next(error)
+           // return res.status(500).json({error:`error al grabar datos`})
         }
     }
-    
