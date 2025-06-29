@@ -1,0 +1,189 @@
+paths:
+  /api/pets/:
+    get:
+      summary: Obtiene todas las mascotas
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Las mascotas fueron obtenidas con exito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/Pet'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+    post:
+      summary: Graba una mascota
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createPet'
+      responses:
+        "200":
+          description: Mascota creada con exito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload: 
+                    $ref: '#components/schemas/Pet'
+        "400": 
+          description: Incomplete values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorPet'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/pets/withimage:
+    post:
+      summary: Graba una mascota con imagen
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                specie:
+                  type: string
+                birthDate:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Mascota creada con exito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload: 
+                    $ref: '#components/schemas/Pet'
+        "400": 
+          description: Incomplete values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorPet'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/pets/{pid}:
+    put: 
+      summary: Modifica una mascota
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id de la mascota a modificar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updatePet'
+      responses:
+        "200":
+          description: mascota modificada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: pet updated
+        "404": 
+          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+    delete:
+      summary: Elimina una mascota 
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id de la mascota a eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: mascota eliminada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: pet deleted
+        "404": 
+          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'

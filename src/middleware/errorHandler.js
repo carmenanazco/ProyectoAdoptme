@@ -13,6 +13,7 @@ export const errorHandler=(error, req, res, next)=>{
     }
 
     res.setHeader('Content-Type', 'application/json');
-    return res.status(404).json({error: `Error inesperado - ingrese una cantidad valida`})
+    //return res.status(404).json({error: `Error inesperado - ingrese una cantidad valida`})
+    return res.status(500).json({error:`Error inesperado - reintente en unos minutos o contacte al administrador`})
     
 }

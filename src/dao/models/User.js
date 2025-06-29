@@ -34,7 +34,14 @@ const schema = new mongoose.Schema({
             }
         ],
         default:[]
-    }
+    },
+    documents:[
+            {
+                name: String,
+                reference: String //link al documento
+            }
+        ],
+    last_connection: Date
 })
 
 const userModel = mongoose.model(collection,schema);

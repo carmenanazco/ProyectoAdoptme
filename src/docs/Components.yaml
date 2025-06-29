@@ -1,0 +1,367 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: objectId
+          description: Id de mongo
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Correo electronico
+        password:
+          type: string
+          description: contraseña
+        role:
+          type: string
+          description: rol
+        pets:
+          type: array
+          description: mascotas adoptadas  
+      example:
+        _id: objectId("684067b5ff38b13f911c5c3e")
+        first_name: Josefina
+        last_name: Mendoza Armas
+        email: Josefina.MendozaArmas28@nearbpo.com
+        password: 123
+        role: admin
+        pets: []
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: objectId
+          description: Id de mongo
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          description: Fecha de nacimiento
+        adopted:
+          type: boolean
+          description: Describe si fue adoptada
+        owner:
+          type: string
+          description: Humano a cargo de la mascota
+        image:
+          type: string
+          description: foto de la mascota 
+      example:
+        _id: objectId("6840638e7ed0050d843b1f55")
+        name: Nala
+        specie: gorilla
+        birthDate: 2022-01-22T23:01:57.579+00:00
+        adopted: false
+        image: ..\public\img\1671549990926-coderDog.jpg
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: objectId
+          description: Id de mongo
+        owner:
+          type: string
+          description: Id del adoptante
+        pet:
+          type: string
+          description: Id de la mascota
+      example:
+        _id: objectId("6840638e7ed0050d843b1f55")
+        owner: 684067b5ff38b13f911c5c3e
+        pet: 68366244d1e39feadd38ec39
+    register:
+      type: object
+      properties:
+        status:
+          type: string
+          description: success
+        payload:
+          type: object
+          properties:
+            _id:
+              type: ObjectId
+              description: id de Mongo 
+      example:
+        status: success
+        _id: objectId("684067b5ff38b13f911c5c3e")
+    error1:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Not found
+    errorLog1:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Email o contraseña incorrectos
+    errorLog2:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Incorrect password
+    errorReg1:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Incomplete values
+    errorReg2:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: User already exists
+    errorAd:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Pet is already adopted
+    errorPet:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Incomplete values
+    errorServer:
+      type: object
+      properties:
+        error: 
+          type: string
+          example: Error inesperado - reintente en unos minutos o contacte al administrador
+    CurrentUserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        payload:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Nombre del usuario
+            email:
+              type: string
+              description: Email del usuario
+            role:
+              type: string
+              description: Rol del usuario
+          example:
+            name: Josefina Mendoza Armas
+            role: user
+            email: Josefina.MendozaArmas28@nearbpo.com
+    ErrorUnauthorized:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        error:
+          type: string
+          example: Token inválido o ausente
+    UnprotectedCurrentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        payload:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Nombre del usuario
+            email:
+              type: string
+              description: Email del usuario
+            role:
+              type: string
+              description: Rol del usuario
+          example:
+            name: Josefina Mendoza Armas
+            role: user
+            email: Josefina.MendozaArmas28@nearbpo.com
+    UploadedDocument:
+      type: object
+      properties:
+        name:
+          type: string
+          example: dni.pdf
+        reference:
+          type: string
+          example: 1729982813-dni.pdf
+        path:
+          type: string
+          example: uploads/documents/1729982813-dni.pdf
+
+  requestBodies:
+    updateUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre de usuario
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Correo del usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+        pets:
+          type: array
+          description: mascotas adoptadas  
+      example:
+        first_name: Josefina
+        last_name: Mendoza Armas
+        email: Josefina.MendozaArmas28@nearbpo.com
+        password: 123
+        pets: []       
+    createPet:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          description: Cumpleaños de la mascota
+      example:
+        name: Charlie
+        specie: dog
+        birthDate: 2017-09-28T12:49:45.232Z
+    createPetWithImage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          description: Cumpleaños de la mascota
+        image:
+          type: string
+          description: Foto de la mascota
+      example:
+        name: Charlie
+        specie: dog
+        birthDate: 2017-09-28T12:49:45.232Z
+        image:  ..\public\img\1671549990926-coderDog.jpg
+    updatePet:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          description: Cumpleaños de la mascota
+        adopted:
+          type: boolean
+          description: Describe si fue adoptada
+      example:
+        name: Nala
+        specie: gorilla
+        birthDate: 2022-01-22T23:01:57.579+00:00
+        adopted: false
+    login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email 
+        password:
+          type: string
+          format: password
+      example:
+        email: Josefina.MendozaArmas28@nearbpo.com
+        password: "coder123"
+    register:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario  
+        email:
+          type: string
+          description: Email del usuario 
+        password:
+          type: string
+          description: Contraseña del usuario
+      example:
+        first_name: Josefina
+        last_name: Mendoza
+        email: Josefina.MendozaArmas28@nearbpo.com
+        password: "coder123"
+    LoginCredentials:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: 123456
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: coderCookie
+    unprotectedCookieAuth:
+      type: apiKey
+      in: cookie
+      name: unprotectedCookie

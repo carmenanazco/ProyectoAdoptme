@@ -12,6 +12,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { addLogger } from './utils/logger.js';
 process.loadEnvFile("./.env")
 
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express'
 
 const app = express();
 dotenv.config()
@@ -24,6 +26,23 @@ app.use(addLogger)
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+
+
+const options={
+    definition:{
+        openapi: "3.0.0",
+        info:{
+            title: "Adoptme documentacion",
+            version: "1.0.0",
+            description: "Adoptme documentacion"
+        }
+    },
+    apis: ["./src/docs/*yaml"]
+}
+const spec = swaggerJSDoc(options)
+//console.log(JSON.stringify(spec, null, 5))
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(spec))
 
 const connection = async() =>{
     await mongoose.connect(UriMongo, {dbName: "Adoptme"})

@@ -1,0 +1,204 @@
+paths:
+  /api/users/:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Los usuarios fueron obtenidos con exito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/User'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/users/{uid}:
+    get:
+      summary: Obtiene un usuario
+      tags:
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: id del usuario solicitado
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Muestra un usuario, según el uid que enviamos en la ruta como parámetro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    example: "success"
+                  payload: 
+                    $ref: '#components/schemas/User'
+        "404": 
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+    put: 
+      summary: Modifica un usuario
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del usuario a modificar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateUser'
+      responses:
+        "201":
+          description: usuario modificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: User updated
+        "404": 
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+    delete:
+      summary: Elimina un usuario 
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del usuario a eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: usuario eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: User deleted
+        "404": 
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+
+  /api/users/{uid}/documents:
+    post:
+      summary: Subir documentos a un usuario
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Uno o más archivos que se cargarán
+      responses:
+        "200":
+          description: Documentos subidos exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Documents uploaded
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UploadedDocument'
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User not found
+
+
+    

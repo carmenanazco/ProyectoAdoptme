@@ -1,0 +1,181 @@
+paths:
+  /api/sessions/login/:
+    post:
+      summary: Realizar login de un usuario previamente registrado
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/login'
+      responses:
+        "200":
+          description: "Login exitoso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: Logged in
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/errorLog1'
+                  - $ref: '#/components/schemas/errorLog2'
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/sessions/register/:
+    post:
+      summary: Registra un usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/register'
+      responses:
+        "200":
+          description: "Registro exitoso"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/register'
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/errorReg1'
+                  - $ref: '#/components/schemas/errorReg2'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/sessions/current:
+    get:
+      summary: Obtener datos del usuario autenticado
+      tags:
+        - Sessions
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Usuario autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentUserResponse'
+        "401":
+          description: Token inválido o ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/sessions/unprotectedLogin:
+    post:
+      summary: Login sin protección 
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/LoginCredentials'
+      responses:
+        "200":
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: Unprotected Logged in
+        "400":
+          description: Campos incompletos o contraseña incorrecta
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/errorLog1'
+                  - $ref: '#/components/schemas/errorLog2'
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/sessions/unprotectedCurrent:
+    get:
+      summary: Obtener usuario no protegido 
+      tags:
+        - Sessions
+      security:
+        - unprotectedCookieAuth: []
+      responses:
+        "200":
+          description: Usuario autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    example: "success"
+                  payload: 
+                    $ref: '#components/schemas/User'
+        "401":
+          description: Token inválido o ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'

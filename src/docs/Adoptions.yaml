@@ -1,0 +1,114 @@
+paths:
+  /api/adoptions/:
+    get:
+      summary: Obtiene todas las adopciones
+      tags:
+        - Adoption
+      responses:
+        "200":
+          description: Las adopciones fueron obtenidas con exito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/Adoption'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/adoptions/{aid}:
+    get:
+      summary: Muestra una adopcion
+      tags:
+        - Adoption
+      parameters:
+      - name: aid
+        in: path
+        required: true
+        description: id de la adopcion solicitada
+        schema:
+        type: string
+      responses:
+        "200":
+          description: Muestra una adopcion, según el uid que enviamos en la ruta como parámetro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  status:
+                    type: string
+                    example: "success"
+                  payload: 
+                    $ref: '#components/schemas/Adoption'
+        "404": 
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Crea una adopcion
+      tags:
+        - Adoption
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del adoptante
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: id de la mascota
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Adopcion creada con exito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message: 
+                    type: string
+                    example: pet adopted
+        "400":
+          description: Pet is already adopted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorAd'
+        "404":
+          description: "Not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorServer'
