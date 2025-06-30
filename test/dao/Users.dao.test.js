@@ -2,7 +2,8 @@ import Users from "../../src/dao/Users.dao.js";
 import mongoose, {isValidObjectId} from "mongoose";
 import { describe, it } from "mocha";
 import Assert from "assert"
-process.loadEnvFile("./.env")
+import dotenv from 'dotenv'
+dotenv.config()
 
 const assert = Assert.strict
 const UriMongo = process.env.URIMONGO

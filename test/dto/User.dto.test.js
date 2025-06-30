@@ -1,6 +1,8 @@
 import UserDTO from "../../src/dto/User.dto.js";
 import { describe, it } from "mocha";
 import { expect } from "chai";
+import dotenv from 'dotenv'
+dotenv.config()
 
 describe("Pruebas Users DTO", ()=>{
 

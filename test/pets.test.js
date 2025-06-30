@@ -4,8 +4,8 @@ import supertest from "supertest";
 import mongoose, { isValidObjectId } from "mongoose";
 import { petsService } from "../src/services/index.js";
 import fs from "fs"
-process.loadEnvFile("./.env")
-
+import dotenv from 'dotenv'
+dotenv.config()
 const UriMongo = process.env.URIMONGO
 
 const requester=supertest("http://localhost:8080")

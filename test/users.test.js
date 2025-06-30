@@ -2,7 +2,8 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import supertest from "supertest";
 import mongoose, { isValidObjectId } from "mongoose";
-process.loadEnvFile("./.env")
+import dotenv from 'dotenv'
+dotenv.config()
 
 const UriMongo = process.env.URIMONGO
 

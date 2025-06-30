@@ -5,7 +5,8 @@ import mongoose, { isValidObjectId } from "mongoose";
 import adoptionModel from "../src/dao/models/Adoption.js";
 import petModel from "../src/dao/models/Pet.js";
 import userModel from "../src/dao/models/User.js";
-process.loadEnvFile("./.env")
+import dotenv from 'dotenv'
+dotenv.config()
 
 const UriMongo = process.env.URIMONGO
 
